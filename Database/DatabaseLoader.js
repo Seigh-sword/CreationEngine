@@ -1,25 +1,18 @@
-// DatabaseLoader.js
+
 export const DatabaseLoader = {
+
     url: "https://script.google.com/macros/s/AKfycbyvcPsgDniiS6ubijvaWqiumvTOksFI5KnMIW9sI2E4MPDvUODwWlBZT4junhktuHAeog/exec",
 
-    async request(method, credentials, payload = {}) {
-        const body = {
-            method: method, 
-            username: credentials.username,
-            password: credentials.password,
-            uuid: credentials.uuid || null,
-            data: payload
-        };
+    async pipe(payload) {
 
         try {
             const response = await fetch(this.url, {
                 method: "POST",
-                body: JSON.stringify(body)
+                body: JSON.stringify(payload)
             });
-            return await response.text();
-        } catch (error) {
-            console.error("DatabaseLoader Error:", error);
-            return "Error: Connection Failed";
+            return await response.json(); 
+        } catch (e) {
+            return { error: "Tunnel Blocked", details: e };
         }
     }
 };
